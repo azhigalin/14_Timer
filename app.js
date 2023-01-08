@@ -1,49 +1,53 @@
-let timeBegan = null;
-let timeStopped = null;
-let stoppedDuration = 0;
-let startInterval = null;
-let flag = false;
-
+let options = {
+  timeBegan: null,
+  timeStopped: null,
+  stoppedDuration: 0,
+  startInterval: null,
+  flag: false,
+};
 const timerContainer = document.querySelector(".timer-container");
 
 timerContainer.addEventListener("click", () => {
-  if (!flag) {
+  if (!options.flag) {
     startTimer();
-    flag = true;
+    options.flag = true;
   } else {
     stopTimer();
-    flag = false;
+    options.flag = false;
   }
 });
 
 timerContainer.addEventListener("dblclick", () => {
-  clearInterval(startInterval);
-  timeBegan = null;
-  timeStopped = null;
-  stoppedDuration = 0;
-  startInterval = null;
+  clearInterval(options.startInterval);
+  options.timeBegan = null;
+  options.timeStopped = null;
+  options.stoppedDuration = 0;
+  options.startInterval = null;
   document.querySelector("#timer-display").innerHTML = "00:00:00";
-  flag = false;
+  options.flag = false;
 });
 
 function startTimer() {
-  if (timeBegan === null) timeBegan = new Date();
-  if (timeStopped !== null) stoppedDuration += new Date() - timeStopped;
+  if (options.timeBegan === null) options.timeBegan = new Date();
+  if (options.timeStopped !== null)
+    options.stoppedDuration += new Date() - options.timeStopped;
 
-  startInterval = setInterval(clockRunning, 10);
+  options.startInterval = setInterval(clockRunning, 10);
 }
 
 function stopTimer() {
-  timeStopped = new Date();
-  clearInterval(startInterval);
+  options.timeStopped = new Date();
+  clearInterval(options.startInterval);
 }
 
 function clockRunning() {
-  let currentTime = new Date();
-  let timeElapsed = new Date(currentTime - timeBegan - stoppedDuration);
-  let minutes = timeElapsed.getMinutes();
-  let seconds = timeElapsed.getSeconds();
-  let milliseconds = timeElapsed.getMilliseconds();
+  let currentTime = new Date(),
+    timeElapsed = new Date(
+      currentTime - options.timeBegan - options.stoppedDuration
+    ),
+    minutes = timeElapsed.getMinutes(),
+    seconds = timeElapsed.getSeconds(),
+    milliseconds = timeElapsed.getMilliseconds();
 
   milliseconds = Math.floor(milliseconds / 10);
 
